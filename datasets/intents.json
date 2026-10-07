@@ -1,0 +1,42 @@
+[
+  {
+    "text": "Hi",
+    "label": "GREETING"
+  },
+  {
+    "text": "Hello team",
+    "label": "GREETING"
+  },
+  {
+    "text": "Generate RCA for incident INC123",
+    "label": "RCA"
+  },
+  {
+    "text": "Analyze root cause of outage",
+    "label": "RCA"
+  },
+  {
+    "text": "Create ServiceNow incident",
+    "label": "INCIDENT"
+  },
+  {
+    "text": "Raise support ticket",
+    "label": "INCIDENT"
+  },
+  {
+    "text": "Show unhealthy pods",
+    "label": "K8S"
+  },
+  {
+    "text": "Check cluster health",
+    "label": "K8S"
+  },
+  {
+    "text": "Summarize today's alerts",
+    "label": "SUMMARY"
+  },
+  {
+    "text": "Provide incident summary",
+    "label": "SUMMARY"
+  }
+]
