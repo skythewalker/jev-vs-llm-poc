@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from src.core.config import settings
 from src.services.comparison_service import (
     ComparisonService,
 )
@@ -106,9 +107,48 @@ class BenchmarkService:
                 }
             )
 
+        if (
+            jev_total_cost > 0
+            and gpt_total_cost > 0
+        ):
+
+            if gpt_total_cost > jev_total_cost:
+
+                cost_ratio = round(
+                    gpt_total_cost
+                    / jev_total_cost,
+                    2,
+                )
+
+                cost_summary = (
+                    f"JEV was {cost_ratio}x cheaper than GPT"
+                )
+
+            else:
+
+                cost_ratio = round(
+                    jev_total_cost
+                    / gpt_total_cost,
+                    2,
+                )
+
+                cost_summary = (
+                    f"GPT was {cost_ratio}x cheaper than JEV"
+                )
+
+        else:
+
+            cost_summary = (
+                "Cost comparison unavailable"
+            )
+
         summary = {
             "total_queries":
                 total_queries,
+            "gpt_model":
+                settings.gpt_model,
+            "jev_model":
+                settings.jev_model,
             "jev": {
                 "accuracy_percent":
                     round(
@@ -160,6 +200,8 @@ class BenchmarkService:
                         gpt_total_cost,
                         8,
                     ),
+                 "cost_summary":
+                                cost_summary,
             },
         }
 
