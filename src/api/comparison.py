@@ -7,6 +7,10 @@ from src.models.schemas import (
 from src.services.comparison_service import (
     ComparisonService,
 )
+from src.services.benchmark_service import (
+    BenchmarkService,
+)
+
 
 router = APIRouter(
     prefix="/compare",
@@ -14,6 +18,9 @@ router = APIRouter(
 )
 
 service = ComparisonService()
+benchmark_service = (
+    BenchmarkService()
+)
 
 
 @router.post(
@@ -30,3 +37,8 @@ async def compare(
     return await service.compare(
         request.query
     )
+
+@router.post("/benchmark")
+async def benchmark():
+
+    return await benchmark_service.run_benchmark()

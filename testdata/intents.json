@@ -1,30 +1,58 @@
 [
-  {
-    "query": "Hello",
-    "expected": "GREETING"
-  },
-  {
-    "query": "Good morning",
-    "expected": "GREETING"
-  },
-  {
-    "query": "Show all active P1 incidents",
-    "expected": "INCIDENT_QUERY"
-  },
-  {
-    "query": "Generate RCA for incident INC12345",
-    "expected": "RCA_REQUEST"
-  },
-  {
-    "query": "Summarize today's alerts",
-    "expected": "SUMMARY_REQUEST"
-  },
-  {
-    "query": "Route this query to the correct troubleshooting agent",
-    "expected": "AGENT_ROUTING"
-  },
-  {
-    "query": "Find impacted applications for service outage",
-    "expected": "SERVICE_IMPACT_ANALYSIS"
-  }
+  {"query": "hey — quick check-in before I paste a ticket", "expected": "GREETING", "difficulty": "easy", "source": "operational-ai-chatbot-backend/src/app/utils/greeting_handler.py"},
+  {"query": "sup", "expected": "GREETING", "difficulty": "easy", "source": "operational-ai-chatbot-backend/src/app/utils/greeting_handler.py"},
+  {"query": "what help can you provide for Envista-New operators?", "expected": "GREETING", "difficulty": "medium", "source": "operational-ai-chatbot-backend/src/app/utils/greeting_handler.py"},
+  {"query": "see you after the change window", "expected": "GREETING", "difficulty": "easy", "source": "operational-ai-chatbot-backend/src/app/utils/greeting_handler.py"},
+  {"query": "hi team — first time in this chat, what should I ask here?", "expected": "GREETING", "difficulty": "hard", "source": "operational-ai-chatbot-backend/src/app/utils/greeting_handler.py"},
+
+  {"query": "anything still open owned by HDS-IT-I&O-NOC right now?", "expected": "INCIDENT_QUERY", "difficulty": "easy", "source": "operational-ai-itsm-agent/prompts/incident_resolver_optimized_program.json"},
+  {"query": "pull records assigned to US - Infrastructure - Network — metadata only, no fuzzy match", "expected": "INCIDENT_QUERY", "difficulty": "medium", "source": "operational-ai-itsm-agent/prompts/incident_resolver_optimized_program.json"},
+  {"query": "where is INC0464751 at in the lifecycle?", "expected": "INCIDENT_QUERY", "difficulty": "easy", "source": "operational-ai-itsm-agent/prompts/incident_resolver_optimized_program.json"},
+  {"query": "any P1 still open for HDS-IT-SAP-SCM?", "expected": "INCIDENT_QUERY", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "INC872721882 — read subject line and current state only", "expected": "INCIDENT_QUERY", "difficulty": "edge", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+
+  {"query": "OIC_Redemption_Email_SFTP keeps failing MFT-5041 — what actually broke the SSH session?", "expected": "RCA_REQUEST", "difficulty": "easy", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "medicimv079 vmware host alert — why did monitoring think it was unhealthy?", "expected": "RCA_REQUEST", "difficulty": "hard", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "password reset flow broke after phishing mail — chain of failure?", "expected": "RCA_REQUEST", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "why was the suggested narrative chosen for ticket INC0461465?", "expected": "RCA_REQUEST", "difficulty": "edge", "source": "operational-ai-chatbot-backend/src/app/utils/incident_reasoning_handler.py"},
+  {"query": "DENMECSPUPS1 SNMP probe from Medicim Mechelen — intentional scan or misconfig?", "expected": "RCA_REQUEST", "difficulty": "hard", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "order_db pool exhausted in demo-utilities — what's the most plausible explanation?", "expected": "RCA_REQUEST", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/incident_relevance.py"},
+
+  {"query": "give me the one-paragraph story for INC0464751 for the bridge", "expected": "SUMMARY_REQUEST", "difficulty": "easy", "source": "operational-ai-itsm-agent/scripts/build_user_query_examples_from_qdrant.py"},
+  {"query": "how many tickets landed today for Envista-New?", "expected": "SUMMARY_REQUEST", "difficulty": "easy", "source": "operational-ai-itsm-agent/scripts/build_user_query_examples_from_qdrant.py"},
+  {"query": "roll up open moderate-priority network items for exec standup", "expected": "SUMMARY_REQUEST", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "VDI access failure for Mike Golden — short ops brief", "expected": "SUMMARY_REQUEST", "difficulty": "easy", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "KER31297 batch 13198083 — ownership + urgency + remediation in one answer", "expected": "SUMMARY_REQUEST", "difficulty": "hard", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "email access inquiry for Karen De Cristoforo — state of play?", "expected": "SUMMARY_REQUEST", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+
+  {"query": "link this Datadog signal to INC872721882 — need ticket context plus KB, skip on-call", "expected": "AGENT_ROUTING", "difficulty": "easy", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "only the runbook/docs side — don't query ServiceNow yet", "expected": "AGENT_ROUTING", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "Mimir database is down — metrics + fix docs, no ticket trawl", "expected": "AGENT_ROUTING", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "INC pattern owner agent only — don't fan out to every ticket system", "expected": "AGENT_ROUTING", "difficulty": "hard", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "events/alerts ingestion path — observability + itsm, nothing else", "expected": "AGENT_ROUTING", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "need history + telemetry + runbooks together for checkout failures", "expected": "AGENT_ROUTING", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "assign responder notification — on-call role, not KB", "expected": "AGENT_ROUTING", "difficulty": "easy", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+
+  {"query": "scroll Qdrant by assignment_group=HDS-IT-ORACLE-INT — no vector pass", "expected": "TOOL_SELECTION", "difficulty": "hard", "source": "operational-ai-itsm-agent/src/oaa_agent_itsm/retrieval/planner.py"},
+  {"query": "hybrid: VPN-like failures but restrict to network team metadata", "expected": "TOOL_SELECTION", "difficulty": "medium", "source": "operational-ai-itsm-agent/prompts/incident_resolver_optimized_program.json"},
+  {"query": "correlate problem record with related outage signals", "expected": "TOOL_SELECTION", "difficulty": "hard", "source": "operational-ai-orchestrator-service/src/agent_client.py"},
+  {"query": "exact_ids fetch INC0943434 then optional similarity overlay", "expected": "TOOL_SELECTION", "difficulty": "hard", "source": "operational-ai-itsm-agent/prompts/incident_resolver_optimized_program.json"},
+  {"query": "need analyze_root_cause capability on the mesh worker, not search", "expected": "TOOL_SELECTION", "difficulty": "edge", "source": "operational-ai-orchestrator-service/src/agent_client.py"},
+  {"query": "provide_opinion step after parallel agent fan-out completes", "expected": "TOOL_SELECTION", "difficulty": "hard", "source": "operational-ai-orchestrator-service/src/graph_orchestrator.py"},
+
+  {"query": "if order_db fails in demo-utilities, which customer journeys break?", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "easy", "source": "operational-ai-context-service/src/llm/incident_relevance.py"},
+  {"query": "blast radius if na-ftp.envistaco.com SFTP stays unreachable for redemption email", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "Spark order response null DESIGN ITEM — which regions/orders are at risk?", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "hard", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "VDI pool saturation for HDS users — scope of user impact", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "medium", "source": "operational-ai-itsm-agent/data/user_query_mixed_natural.train.json"},
+  {"query": "escalate one tier if blast radius exceeds historical INC0461465 scope", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "hard", "source": "operational-ai-itsm-agent/scripts/build_curation_from_collection.py"},
+  {"query": "payment service failing all transactions — map affected apps", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "medium", "source": "operational-ai-itsm-agent/scripts/build_user_query_examples_from_qdrant.py"},
+  {"query": "alert/event triage: metrics + impacted components before tagging to ticket", "expected": "SERVICE_IMPACT_ANALYSIS", "difficulty": "edge", "source": "operational-ai-data-processor-service/tests/golden/fixtures/datadog/expected_pipeline_output.json"},
+
+  {"query": "what's the weather in Dallas tomorrow?", "expected": "UNKNOWN", "difficulty": "easy", "source": "operational-ai-context-service/src/llm/incident_relevance.py"},
+  {"query": "how do I link aadhaar to my bank account?", "expected": "UNKNOWN", "difficulty": "easy", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "my home laptop is slow — random tips?", "expected": "UNKNOWN", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "TBD", "expected": "UNKNOWN", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/incident_relevance.py"},
+  {"query": "can you book me a flight to Tokyo?", "expected": "UNKNOWN", "difficulty": "medium", "source": "operational-ai-context-service/src/llm/agent_selection.py"},
+  {"query": "INC????", "expected": "UNKNOWN", "difficulty": "edge", "source": "operational-ai-context-service/src/llm/incident_relevance.py"},
+  {"query": "help", "expected": "UNKNOWN", "difficulty": "edge", "source": "operational-ai-context-service/src/llm/incident_relevance.py"}
 ]

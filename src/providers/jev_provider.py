@@ -3,16 +3,16 @@ import time
 import httpx
 
 from src.core.config import settings
-from src.core.constants import (
-    JEV_INPUT_COST_PER_MILLION,
-    JEV_OUTPUT_COST_PER_MILLION,
+from src.core.pricing import (
+    JEV_PRICING,
+    calculate_cost,
 )
-from src.core.cost_calculator import calculate_cost
 from src.models.schemas import ClassificationResult
 from src.providers.base_provider import BaseProvider
 
 
 class JEVProvider(BaseProvider):
+
     async def classify(
         self,
         query: str,
@@ -63,6 +63,7 @@ class JEVProvider(BaseProvider):
         }
 
         try:
+
             async with httpx.AsyncClient(
                 timeout=30
             ) as client:
@@ -73,7 +74,9 @@ class JEVProvider(BaseProvider):
                         "Authorization": (
                             f"Bearer {settings.jev_api_key}"
                         ),
-                        "Content-Type": "application/json",
+                        "Content-Type": (
+                            "application/json"
+                        ),
                     },
                     json=payload,
                 )
@@ -83,24 +86,40 @@ class JEVProvider(BaseProvider):
                 result = response.json()
 
         except Exception:
+
             latency_ms = (
-                time.perf_counter() - start_time
+                time.perf_counter()
+                - start_time
             ) * 1000
 
             return ClassificationResult(
                 provider="jev",
                 intent="UNKNOWN",
                 confidence=0.0,
-                latency_ms=round(latency_ms, 2),
+                latency_ms=round(
+                    latency_ms,
+                    2,
+                ),
+                input_tokens=0,
+                output_tokens=0,
+                estimated_cost=0.0,
             )
 
         latency_ms = (
-            time.perf_counter() - start_time
+            time.perf_counter()
+            - start_time
         ) * 1000
 
-        intent_answer = result["answers"]["intent"]
+        intent_answer = result[
+            "answers"
+        ][
+            "intent"
+        ]
 
-        usage = result.get("usage", {})
+        usage = result.get(
+            "usage",
+            {},
+        )
 
         input_tokens = usage.get(
             "input_tokens",
@@ -112,20 +131,26 @@ class JEVProvider(BaseProvider):
             0,
         )
 
+        pricing = JEV_PRICING[
+            settings.jev_model
+        ]
+
         estimated_cost = calculate_cost(
             input_tokens=input_tokens,
             output_tokens=output_tokens,
-            input_price_per_million=(
-                JEV_INPUT_COST_PER_MILLION
-            ),
-            output_price_per_million=(
-                JEV_OUTPUT_COST_PER_MILLION
-            ),
+            input_price=pricing[
+                "input_per_million"
+            ],
+            output_price=pricing[
+                "output_per_million"
+            ],
         )
 
         return ClassificationResult(
             provider="jev",
-            intent=intent_answer["choice"],
+            intent=intent_answer[
+                "choice"
+            ],
             confidence=float(
                 intent_answer.get(
                     "confidence",
