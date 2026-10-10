@@ -1,0 +1,30 @@
+[
+  {
+    "query": "Hello",
+    "expected": "GREETING"
+  },
+  {
+    "query": "Good morning",
+    "expected": "GREETING"
+  },
+  {
+    "query": "Show all active P1 incidents",
+    "expected": "INCIDENT_QUERY"
+  },
+  {
+    "query": "Generate RCA for incident INC12345",
+    "expected": "RCA_REQUEST"
+  },
+  {
+    "query": "Summarize today's alerts",
+    "expected": "SUMMARY_REQUEST"
+  },
+  {
+    "query": "Route this query to the correct troubleshooting agent",
+    "expected": "AGENT_ROUTING"
+  },
+  {
+    "query": "Find impacted applications for service outage",
+    "expected": "SERVICE_IMPACT_ANALYSIS"
+  }
+]

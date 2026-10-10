@@ -1,5 +1,66 @@
-.venv/
-.env
+# Python
 __pycache__/
-results/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+
+# Benchmark outputs
+benchmark_results.json
+benchmark_results.csv
+benchmark_results_*.json
+benchmark_results_*.csv
+
+# Temporary files
+*.tmp
+*.temp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# UV
+uv.lock
+
+# Local SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets
+secrets.json
+credentials.json
+
+# Render
+.render/
+
+# Misc
+.cache/
